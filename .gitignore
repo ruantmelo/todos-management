@@ -1,0 +1,11 @@
+node_modules/
+.tap/
+
+*.db
+
+# Env
+.env*
+!.env.example
+
+# Tests
+test-diag.txt
