@@ -1,11 +1,17 @@
-import { CreateCategorySchema } from "../models/categories";
+import { CategorySchema, CreateCategorySchema } from "../models/categories";
 import { categories } from "../database/schema";
 import { FastifyPluginCallbackZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 
 export const categoriesRoutes: FastifyPluginCallbackZod = (instance, opts, done) => {
-  instance.get('/', async () => {
+  instance.get('/', {
+    schema: {
+      response: {
+        200: CategorySchema.array()
+      }
+    }
+  }, async () => {
     const categories = await instance.db.query.categories.findMany();
 
     return categories;
@@ -13,7 +19,10 @@ export const categoriesRoutes: FastifyPluginCallbackZod = (instance, opts, done)
 
   instance.post('/', {
     schema: {
-      body: CreateCategorySchema
+      body: CreateCategorySchema,
+      response: {
+        201: CategorySchema,
+      }
     }
   }, async (req, reply) => {
     reply.statusCode = 201;
