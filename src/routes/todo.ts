@@ -1,4 +1,3 @@
-import { FastifyPluginCallback } from "fastify"
 import { FastifyPluginCallbackZod } from "fastify-type-provider-zod";
 import { CreateTodoSchema } from "../models/todos";
 import { todos } from "../database/schema";

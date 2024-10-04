@@ -1,16 +1,24 @@
 import { buildApp } from "../app"
-import { test } from 'tap'
+import { test, before, after } from 'tap'
 import { todos } from "../database/seed"
 import { CreateTodoSchema, Todo, TodoSchema } from "../models/todos"
 import { z } from "zod"
+import { FastifyZodInstance } from "fastify"
 
 let createdTodo: null | Todo = null;
+let app: FastifyZodInstance;  
+
+
+before(() => {
+  app = buildApp()
+})
+
+after(async () => {
+  await app.close()
+})
 
 test('It should be able to list all todos', async t => {
-  const app = buildApp()
-
-  t.teardown(async () => await app.close())
-
+  
   const { statusCode, body } = await app.inject({
     url: '/v1/todos',
     method: 'GET'
@@ -26,9 +34,6 @@ test('It should be able to list all todos', async t => {
 })
 
 test('It should be able to create a todo', async t => {
-  const app = buildApp()
-
-  t.teardown(async () => await app.close())
 
   const newTodo: z.infer<typeof CreateTodoSchema> = {
     title: 'Math exercises',
@@ -54,10 +59,6 @@ test('It should be able to create a todo', async t => {
 
 test('It should be able to delete a todo', async t => {
   if (!createdTodo) return t.fail('todo not created (parent)')
-
-  const app = buildApp()
-
-  t.teardown(async () => await app.close())
 
   const { statusCode } = await app.inject({
     url: `/v1/todos/${createdTodo.id}`,

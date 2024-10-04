@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tap --reporter=min --output-file=test-diag.txt --jobs=1 --allow-empty-coverage",
+    "test": "tap --output-file=test-diag.txt --jobs=1 --allow-empty-coverage",
     "dev": "ts-node --transpileOnly src/server.ts",
     "build": "tsc -p tsconfig.json",
     "db:seed": "ts-node src/database/seed.ts",

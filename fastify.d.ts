@@ -12,7 +12,9 @@ declare module 'fastify' {
   //   db: number
   // }
 
-  interface FastifyInstance extends FastifyInstance<Server<typeof IncomingMessage, typeof ServerResponse>, IncomingMessage, ServerResponse<IncomingMessage>, FastifyBaseLogger, ZodTypeProvider>{
+  export type FastifyZodInstance = FastifyInstance<Server<typeof IncomingMessage, typeof ServerResponse>, IncomingMessage, ServerResponse<IncomingMessage>, FastifyBaseLogger, ZodTypeProvider>;
+
+  interface FastifyInstance extends FastifyZodInstance {
     db: Database
   }
 
